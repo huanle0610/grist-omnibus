@@ -29,6 +29,29 @@ oauth2:
 
 connectors:
 
+- type: ldap
+  id: ldap
+  name: MyAD
+  config:
+    host: "ds.domain.com"  # LDAP server and port (636 for LDAPS, 389 for ldap)
+    insecureSkipVerify: true         # Skip SSL certificate verification (not recommended in production)
+    insecureNoSSL: true
+    bindDN: "CN=xxxx,CN=Users,DC=domain,DC=com" # DN of the user Dex will bind as
+    bindPW: "xxxx"               # Password for the bind user
+    userSearch:
+      baseDN: "CN=Users,DC=domain,DC=com"  # Base DN to search for users
+      filter: "(objectClass=user)"  # LDAP filter for users
+      username: "sAMAccountName"    # LDAP attribute to use as the username
+      idAttr: "DN"                  # LDAP attribute to use as the user ID
+      emailAttr: "mail"             # LDAP attribute to use as the email
+      nameAttr: "displayName"       # LDAP attribute to use as the full name
+    groupSearch:
+      baseDN: "CN=Users,DC=domain,DC=com"  # Base DN to search for groups
+      filter: "(objectClass=group)"  # LDAP filter for groups
+      userAttr: "DN"                 # LDAP attribute that links users to groups
+      groupAttr: "member"            # LDAP attribute that contains users
+      nameAttr: "cn"                 # LDAP attribute to use as the group name
+
  - type: google
    id: google
    name: Google
